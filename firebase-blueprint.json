@@ -1,0 +1,162 @@
+{
+  "entities": {
+    "StudentProfile": {
+      "title": "StudentProfile",
+      "description": "Profil akademik, hafalan, dan biodata pribadi santri",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "Nama lengkap santri" },
+        "nis": { "type": "string", "description": "Nomor Induk Santri" },
+        "level": { "type": "string", "description": "Tingkat pendidikan kelas" },
+        "faculty": { "type": "string", "description": "Fakultas / Peminatan" },
+        "dorm": { "type": "string", "description": "Nama asrama dan kamar" },
+        "status": { "type": "string", "enum": ["Aktif", "Cuti", "Alumni"] },
+        "photoUrl": { "type": "string", "description": "URL foto pofil" },
+        "stats": {
+          "type": "object",
+          "properties": {
+            "gpa": { "type": "number", "description": "Rerata Rapor Kumulatif (NRK)" },
+            "ips": { "type": "number", "description": "Rerata Nilai Semester (RNS)" },
+            "hafalan": { "type": "string", "description": "Rangkuman hafalan Juz" },
+            "attendance": { "type": "string", "description": "Persentase kehadiran" },
+            "points": { "type": "number", "description": "Poin kedisiplinan" }
+          }
+        },
+        "biodata": {
+          "type": "object",
+          "properties": {
+            "gender": { "type": "string", "description": "Jenis kelamin" },
+            "birthPlaceDate": { "type": "string", "description": "Tempat & tanggal lahir" },
+            "address": { "type": "string", "description": "Alamat asal santri" },
+            "fatherName": { "type": "string", "description": "Nama ayah kandung" },
+            "motherName": { "type": "string", "description": "Nama ibu kandung" },
+            "phone": { "type": "string", "description": "Nomor kontak wali/orang tua" }
+          }
+        }
+      },
+      "required": ["name", "nis", "level", "dorm", "status"]
+    },
+    "Announcement": {
+      "title": "Announcement",
+      "description": "Pengumuman dan berita resmi dari pesantren",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "slug": { "type": "string" },
+        "category": { "type": "string", "enum": ["wali", "akademik", "umum"] },
+        "date": { "type": "string" },
+        "author": { "type": "string" },
+        "summary": { "type": "string" },
+        "content": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "readTime": { "type": "string" }
+      },
+      "required": ["id", "title", "slug", "category", "content"]
+    },
+    "AgendaEvent": {
+      "title": "AgendaEvent",
+      "description": "Kegiatan dan agenda kalender pesantren",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "date": { "type": "string" },
+        "time": { "type": "string" },
+        "location": { "type": "string" },
+        "category": { "type": "string", "enum": ["Akademik", "Kesiswaan", "Pembangunan", "Keagamaan", "Umum"] },
+        "description": { "type": "string" }
+      },
+      "required": ["id", "title", "date", "category"]
+    },
+    "InventoryItem": {
+      "title": "InventoryItem",
+      "description": "Aset dan inventaris dalam pesantren",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "category": { "type": "string" },
+        "total": { "type": "number" },
+        "goodCondition": { "type": "number" },
+        "needRepair": { "type": "number" },
+        "location": { "type": "string" },
+        "lastChecked": { "type": "string" }
+      },
+      "required": ["id", "name", "category", "total"]
+    },
+    "PaymentLog": {
+      "title": "PaymentLog",
+      "description": "Log pembayaran administrasi/SPP santri",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "studentName": { "type": "string" },
+        "nis": { "type": "string" },
+        "month": { "type": "string" },
+        "amount": { "type": "number" },
+        "status": { "type": "string", "enum": ["Lunas", "Tertunda", "Belum Bayar"] },
+        "date": { "type": "string" }
+      },
+      "required": ["id", "studentName", "nis", "month", "amount", "status"]
+    },
+    "DisciplineRecord": {
+      "title": "DisciplineRecord",
+      "description": "Catatan pelanggaran kedisiplinan santri",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "studentName": { "type": "string" },
+        "nis": { "type": "string" },
+        "infraction": { "type": "string" },
+        "date": { "type": "string" },
+        "pointsDeducted": { "type": "number" },
+        "severity": { "type": "string", "enum": ["Ringan", "Sedang", "Berat"] }
+      },
+      "required": ["id", "studentName", "nis", "infraction", "pointsDeducted", "severity"]
+    },
+    "GalleryImage": {
+      "title": "GalleryImage",
+      "description": "Foto galeri kegiatan pesantren",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "url": { "type": "string" },
+        "title": { "type": "string" },
+        "category": { "type": "string" },
+        "date": { "type": "string" }
+      },
+      "required": ["id", "url", "title", "category"]
+    }
+  },
+  "firestore": {
+    "student_profiles/{nis}": {
+      "schema": "StudentProfile",
+      "description": "Profil santri"
+    },
+    "announcements/{id}": {
+      "schema": "Announcement",
+      "description": "Pengumuman dan berita"
+    },
+    "agenda_events/{id}": {
+      "schema": "AgendaEvent",
+      "description": "Kalender akademik dan kegiatan"
+    },
+    "inventory_items/{id}": {
+      "schema": "InventoryItem",
+      "description": "Manajemen fasilitas dan sarana"
+    },
+    "payment_logs/{id}": {
+      "schema": "PaymentLog",
+      "description": "Log pembayaran bulanan/SPP"
+    },
+    "discipline_records/{id}": {
+      "schema": "DisciplineRecord",
+      "description": "Laporan kedisiplinan santri"
+    },
+    "gallery_images/{id}": {
+      "schema": "GalleryImage",
+      "description": "Galeri foto kegiatan dan fasilitas"
+    }
+  }
+}
